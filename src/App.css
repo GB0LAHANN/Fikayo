@@ -1,64 +1,247 @@
 
+/* GENERAL STYLING */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: #111827;
+  background: #080d19;
   color: white;
-}
-
-.game {
   min-height: 100vh;
+}
+
+/* GAME CONTAINER */
+.game {
+  width: 100%;
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px 20px;
+  text-align: center;
+  background: #111a2e;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.game h1 {
+  font-size: 36px;
+  margin-bottom: 25px;
+  color: #00ff88;
+}
+
+/* TIME SETTINGS */
+.time-settings {
+  margin-bottom: 25px;
+}
+
+.time-settings h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #dce5f5;
+}
+
+.time-options {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
-h1 {
-  font-size: 40px;
+.time-options button,
+.custom-time button {
+  padding: 10px 16px;
+  border: 1px solid #34425b;
+  border-radius: 8px;
+  background: #1c2940;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
-.board {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
+.time-options button:hover,
+.custom-time button:hover {
+  background: #00cc77;
+  color: #080d19;
+  transform: translateY(-2px);
+}
+
+.time-options button.active-time {
+  background: #00ff88;
+  color: #080d19;
+  border-color: #00ff88;
+}
+
+.time-options button:disabled,
+.custom-time button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* CUSTOM TIME INPUT */
+.custom-time {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
-.square {
-  width: 100px;
-  height: 100px;
-  font-size: 40px;
-  font-weight: bold;
-  border: none;
+.custom-time input {
+  width: 190px;
+  padding: 11px;
+  border: 1px solid #34425b;
+  border-radius: 8px;
+  background: #080d19;
+  color: white;
+  outline: none;
+}
+
+.custom-time input:focus {
+  border-color: #00ff88;
+}
+
+.custom-time input::placeholder {
+  color: #8995a9;
+}
+
+/* SCOREBOARD */
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 15px;
+  margin: 20px 0;
+  background: #1c2940;
   border-radius: 12px;
-  background: #374151;
-  color: #22d3ee;
+}
+
+.scoreboard p {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* TIMER */
+.timer {
+  margin: 25px 0;
+}
+
+.timer h3 {
+  font-size: 16px;
+  color: #aab7cc;
+  margin-bottom: 8px;
+}
+
+.timer h2 {
+  font-size: 40px;
+  color: #00ff88;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+/* GAME STATUS */
+.game > h2 {
+  font-size: 20px;
+  margin: 20px 0;
+  color: #ffffff;
+}
+
+/* GAME BOARD */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 330px;
+  margin: 25px auto;
+}
+
+.square {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid #34425b;
+  border-radius: 12px;
+  background: #1c2940;
+  color: white;
+  font-size: 45px;
+  font-weight: bold;
   cursor: pointer;
+  transition: 0.3s ease;
 }
 
 .square:hover {
-  background: #4b5563;
+  background: #263954;
+  border-color: #00ff88;
+  transform: scale(1.04);
 }
 
+.square:active {
+  transform: scale(0.96);
+}
+
+/* WINNING SQUARE */
+.winning-square {
+  background: #00cc77;
+  color: #080d19;
+  border-color: #00ff88;
+}
+
+/* RESTART BUTTONS */
 .restart {
-  padding: 12px 25px;
+  padding: 12px 22px;
+  margin: 8px;
   border: none;
   border-radius: 8px;
-  background: #06b6d4;
-  color: white;
-  font-size: 16px;
+  background: #00cc77;
+  color: #080d19;
+  font-size: 15px;
+  font-weight: bold;
   cursor: pointer;
+  transition: 0.3s ease;
 }
 
+.restart:hover {
+  background: #00ff88;
+  transform: translateY(-3px);
+}
 
-.winning-square {
-  background: #16a34a !important;
-  color: white !important;
-  transform: scale(1.05);
-  transition: 0.3s ease;
+.restart:active {
+  transform: scale(0.96);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 500px) {
+  .game {
+    margin: 15px;
+    width: auto;
+    padding: 22px 15px;
+  }
+
+  .game h1 {
+    font-size: 29px;
+  }
+
+  .scoreboard {
+    gap: 5px;
+    padding: 12px 8px;
+  }
+
+  .scoreboard p {
+    font-size: 12px;
+  }
+
+  .square {
+    font-size: 36px;
+  }
+
+  .timer h2 {
+    font-size: 34px;
+  }
+
+  .restart {
+    padding: 11px 15px;
+    font-size: 13px;
+  }
 }
