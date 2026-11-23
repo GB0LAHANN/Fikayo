@@ -14,20 +14,24 @@ const winningLines = [
 ];
 
 function App() {
+  // Game states
   const [board, setBoard] = useState(Array(9).fill(""));
   const [isXTurn, setIsXTurn] = useState(true);
 
+  // Scoreboard
   const [scores, setScores] = useState({
     X: 0,
     O: 0,
     draws: 0,
   });
 
+  // Timer states
   const [selectedTime, setSelectedTime] = useState(2);
   const [customTime, setCustomTime] = useState("");
   const [timeLeft, setTimeLeft] = useState(120);
   const [gameStarted, setGameStarted] = useState(false);
 
+  // Check for winner
   function calculateWinner(squares) {
     for (let line of winningLines) {
       const [a, b, c] = line;
@@ -45,7 +49,9 @@ function App() {
   }
 
   const winner = calculateWinner(board);
-  const isDraw = !winner && board.every((square) => square !== "");
+
+  const isDraw =
+    !winner && board.every((square) => square !== "");
 
   // Countdown timer
   useEffect(() => {
@@ -59,6 +65,13 @@ function App() {
 
     return () => clearInterval(timer);
   }, [gameStarted, winner, isDraw, timeLeft]);
+
+  // Stop game when it ends
+  useEffect(() => {
+    if (winner || isDraw || timeLeft === 0) {
+      setGameStarted(false);
+    }
+  }, [winner, isDraw, timeLeft]);
 
   // Format timer
   const minutes = Math.floor(timeLeft / 60);
@@ -78,7 +91,12 @@ function App() {
   function setCustomGameTime() {
     const minutes = Number(customTime);
 
-    if (!Number.isInteger(minutes) || minutes < 1 || minutes > 60) {
+    if (
+      customTime.trim() === "" ||
+      !Number.isInteger(minutes) ||
+      minutes < 1 ||
+      minutes > 60
+    ) {
       alert("Please enter a whole number between 1 and 60 minutes.");
       return;
     }
@@ -87,6 +105,7 @@ function App() {
     setTimeLeft(minutes * 60);
   }
 
+  // Handle square clicks
   function handleClick(index) {
     if (
       board[index] !== "" ||
@@ -100,10 +119,12 @@ function App() {
     setGameStarted(true);
 
     const newBoard = [...board];
+
     newBoard[index] = isXTurn ? "X" : "O";
 
     const newWinner = calculateWinner(newBoard);
-    const newDraw = 
+
+    const newDraw =
       !newWinner && newBoard.every((square) => square !== "");
 
     if (newWinner) {
@@ -111,11 +132,18 @@ function App() {
         ...previous,
         [newWinner]: previous[newWinner] + 1,
       }));
-    } else if (newDraw) { 
+    } else if (newDraw) {
+      setScores((previous) => ({
+        ...previous,
+        draws: previous.draws + 1,
+      }));
+    }
+
     setBoard(newBoard);
     setIsXTurn(!isXTurn);
   }
 
+  // Restart game
   function restartGame() {
     setBoard(Array(9).fill(""));
     setIsXTurn(true);
@@ -123,13 +151,21 @@ function App() {
     setGameStarted(false);
   }
 
+  // Reset scores
   function resetScores() {
-    setScores({ X: 0, O: 0, draws: 0 });
+    setScores({
+      X: 0,
+      O: 0,
+      draws: 0,
+    });
+
     restartGame();
   }
 
+  // Main JSX
   return (
     <div className="game">
+
       <h1>Tic-Tac-Toe</h1>
 
       {/* Time Settings */}
@@ -140,7 +176,11 @@ function App() {
           {[1, 2, 3, 5].map((minute) => (
             <button
               key={minute}
-              className={selectedTime === minute && !customTime ? "active-time" : ""}
+              className={
+                selectedTime === minute && !customTime
+                  ? "active-time"
+                  : ""
+              }
               onClick={() => chooseTime(minute)}
               disabled={gameStarted}
             >
@@ -218,6 +258,7 @@ function App() {
         })}
       </div>
 
+      {/* Game Buttons */}
       <button className="restart" onClick={restartGame}>
         Restart Game
       </button>
@@ -225,6 +266,7 @@ function App() {
       <button className="restart" onClick={resetScores}>
         Reset Scores
       </button>
+
     </div>
   );
 }
